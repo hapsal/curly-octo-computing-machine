@@ -10,4 +10,4 @@ apt-get update
 apt-get install -y curl
 EOF
 
-CMD ["./script.sh"]
+CMD ["bash", "./script.sh"]
