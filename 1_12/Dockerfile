@@ -1,26 +1,15 @@
 FROM ubuntu
 
-EXPOSE 5001
+WORKDIR /app
 
-WORKDIR /usr/src/app
+RUN apt-get -y update && apt-get install -y curl
 
-COPY package.json package-lock.json ./
-
-RUN <<EOF
-apt-get update
-apt-get install -y curl
-EOF
-
-RUN <<EOF
-curl -sL https://deb.nodesource.com/setup_16.x | bash
-apt-get install -y nodejs
-npm install
-EOF
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
+RUN apt-get install -y nodejs
 
 COPY . .
 
-RUN REACT_APP_BACKEND_URL=http://localhost:5001 npm run build
-
+RUN npm install && npm run build
 RUN npm install -g serve
 
 CMD ["serve", "-s", "-l", "5001", "build"]
